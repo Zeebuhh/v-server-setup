@@ -45,7 +45,7 @@ To check if the key is authorized i do:
 ->ls -al ~/.ssh see the authorized_keys file
 ->cat ~/.ssh/authorized_keys finding my ssh public key
 
-#######################################
+##############################################################################
 
 Now i try deny access via password, so only ssh authorization is possible.
 This is done by adjusting the sshd_config file on the server.
@@ -84,5 +84,80 @@ With:
 I check to see if further configurations can be made from local machine,
 but the response is: [ Permission denied (publickey) ],
 which shows that it worked.
+
+##############################################################################
+
+Now i want to install nginx to create a webservice for our server
+
+For this i first log into the server via ssh.
+Then i need to update our current repositories from our server
+to make sure i use the latest versions:
+
+    ->sudo apt update
+
+After this i can install nginx with this command:
+
+    ->sudo apt install nginx -y
+
+To check if the installation was successful:
+
+    -> systemctl status nginx.service
+
+returns:
+
+    ....Active: active(running)...
+
+indicating success.
+
+When using a webclient to the server IP-adress we can see the NGINX default UI.
+Now we want to change the default UI from the webserver.
+
+For this we go to '/var/www on our sever with root permissions (sudo)
+and create a 'alternatives' directory and a file named alternate-index-html
+
+    ->sudo mkdir /var/www/alternatives                          (directory creation)
+    ->sudo touch /var/www/alternatives/alternate-index.html     (file creation)
+
+To check if it worked (list) i can try:
+
+    -> ls /var/www/
+    -> ls /var/www/alternatives
+
+To let nginx knwo what configuirations we want for the webserver,
+we create a file 'alternatives' under 'sites-enables'.
+
+    ->sudo nano /etc/nginx/sites-enabled/alternatives
+
+In nano we can now insert as follows:
+
+    server {
+            listen: 8081;
+            listen [..]:8081;
+
+            root /var/www/alternatives;
+            index alternate-index.html;
+
+            location / {
+                    try_files $uri $uri/ =404;
+            }
+    }
+
+Here we have our requests listen on Port 8081, define our 'alternatives' path as resource for root
+and our index-page which will be my individual html file (alternate-index-html).
+All other locations on the page will be handled by the location configuration.
+
+The last thing we need is the alternate-index.html file itself:
+We exit and try:
+
+    ->sudo nano /var/www/alternatives/alternate-index-html
+
+now add custom html to the file, save and exit.
+
+To make changes effective we restart nginx and check if active state of the service is updated:
+
+    ->sudo service nginx restart
+    ->systemctl status nginx.service
+
+To check we go to a webclient at {hostipadress}:8081 or {hostipadress}:8081/{custom}
 
 ##############################################################################
