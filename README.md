@@ -2,6 +2,10 @@
 
 # v-server-setup - Nikolas -
 
+## IP-Adresse: 159.69.20.89
+
+## GitHub-Repository: https://github.com/Zeebuhh/v-server-setup
+
 ## Setting up a v-server with nginx
 
 ##############################################################################
@@ -87,7 +91,7 @@ which shows that it worked.
 
 ##############################################################################
 
-Now i want to install nginx to create a webservice for our server
+Now i want to install nginx to create a webservice for the server
 
 For this i first log into the server via ssh.
 Then i need to update our current repositories from our server
@@ -161,3 +165,30 @@ To make changes effective we restart nginx and check if active state of the serv
 To check we go to a webclient at {hostipadress}:8081 or {hostipadress}:8081/{custom}
 
 ##############################################################################
+
+Now we just need to add git to our server:
+
+    -> sudo apt-get install git -y
+
+Then we create a new SSH key for the Server to connect to github to directly
+work with the repository from the server
+
+    ->  ssh-keygen -t ed25519 -C "github key"
+
+To show and copy we use:
+
+    -> cat ~/.ssh/id_ed25519.pub
+
+Then add the Key to our GitHub SSH Keys (GitHub/Settings/SSH Keys GPG Keys)
+On Our server we can add our username and email:
+
+    ->git config --global user.name "username"
+    ->git config --global user.email "email@example.com"
+
+We can now clone our repository from Github and work with it !
+
+    -> git clone git@github.com:YourName/vServer_setup.git
+
+#############################################################################
+
+SETUP DONE
