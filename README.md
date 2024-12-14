@@ -1,5 +1,11 @@
 # V-Server Setup Guide
 
+## Introduction
+
+This guide outlines the steps to set up a virtual server (V-Server) with enhanced security, Nginx as a web server, and Git for version control. Follow each section in sequence to ensure a successful setup.
+
+---
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
@@ -17,34 +23,28 @@
 
 ---
 
-## Introduction
-
-This guide outlines the steps to set up a virtual server (V-Server) with enhanced security, Nginx as a web server, and Git for version control. Follow each section in sequence to ensure a successful setup.
-
-Repository: [GitHub Repository](https://github.com/Zeebuhh/v-server-setup)
-
-Server IP Address: `159.69.20.89`
-
----
-
 ## Initial Setup
 
 ### Generate and Save SSH Keys
 
-1. Generate SSH keys on your local machine for secure server access:
+1. If the `.ssh` directory does not exist on your local machine, create it:
+   ```bash
+   mkdir -p ~/.ssh
+   ```
+2. Generate SSH keys on your local machine for secure server access:
    ```bash
    ssh-keygen -t ed25519 -C "your_email@example.com"
    ```
-2. Save the generated keys in a secure location.
+3. Save the generated keys in a secure location.
 
 ### Log Into the Server
 
-1. Use the provided IP address, username, and password to log into the server:
+1. Verify the connection using the provided IP address, username, and password:
    ```bash
    ssh user@hostipaddress
    ```
    Password: `userpassword`
-2. Verify the connection by logging in successfully, then log out:
+2. If you want to log out, use the following command:
    ```bash
    logout
    ```
@@ -149,13 +149,21 @@ Server IP Address: `159.69.20.89`
 4. Save the file and restart Nginx:
    ```bash
    sudo service nginx restart
+   ```
+
+### Check Nginx Status
+
+5. Verify Nginx is running:
+
+   ```bash
    systemctl status nginx.service
    ```
-5. Edit the custom HTML file to include your content:
+
+6. Edit the custom HTML file to include your content:
    ```bash
    sudo nano /var/www/alternatives/alternate-index.html
    ```
-6. Test the custom page by visiting `http://hostipaddress:8081`.
+7. Test the custom page by visiting `http://hostipaddress:8081`.
 
 ---
 
@@ -188,4 +196,4 @@ Server IP Address: `159.69.20.89`
 
 ## Conclusion
 
-Congratulations! Your V-Server is now set up with a secure SSH connection, a functional web server using Nginx, and Git integration.
+Congratulations! Your V-Server is now set up with a secure SSH connection, a functional web server using Nginx, and Git integration. Refer back to this guide if you need to make updates or troubleshoot issues.
